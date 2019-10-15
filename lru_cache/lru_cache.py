@@ -1,3 +1,9 @@
+from doubly_linked_list import DoublyLinkedList
+
+#combination of hash table and queue
+
+
+
 class LRUCache:
     """
     Our LRUCache class keeps track of the max number of nodes it
@@ -7,17 +13,29 @@ class LRUCache:
     to every node stored in the cache.
     """
     def __init__(self, limit=10):
-        pass
-
+        
+        self.limit = limit
+        self.order = DoublyLinkedList()
+        self.storage = dict()
+        
+        # a = {"name": "george", "age": 26}
+        # a["name"] = george
     """
+
     Retrieves the value associated with the given key. Also
     needs to move the key-value pair to the end of the order
     such that the pair is considered most-recently used.
     Returns the value associated with the key or None if the
     key-value pair doesn't exist in the cache.
     """
+    #hash table and doubly linked list.. this allows us to access, for example, the middle variable by looking it up instead of iterating 
     def get(self, key):
-        pass
+        #get key from dictionary if the key is in self.storage         
+        if key in self.storage:
+            get_node = self.storage[key]
+            #get_node = value
+            self.order.move_to_end(get_node)
+            return get_node.value
 
     """
     Adds the given key-value pair to the cache. The newly-
