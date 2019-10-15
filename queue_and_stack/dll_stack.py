@@ -25,3 +25,5 @@ class Stack:
 
     def len(self):
         return self.size
+
+
