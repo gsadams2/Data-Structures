@@ -1,6 +1,6 @@
 """
 Node class to keep track of
-the data internal to individual nodes
+the data internal to individual nodes ..
 """
 class Node:
     def __init__(self, key):
