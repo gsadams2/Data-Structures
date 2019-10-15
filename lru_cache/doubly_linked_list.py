@@ -5,6 +5,7 @@ class ListNode:
         self.value = value
         self.prev = prev
         self.next = next
+        
    
     def insert_after(self, value):
         """Wrap the given value in a ListNode and insert it
