@@ -16,7 +16,7 @@ class LRUCache:
         
         self.limit = limit
         self.order = DoublyLinkedList()
-        self.storage = dict()
+        self.storage = {}
         
         # a = {"name": "george", "age": 26}
         # a["name"] = george
@@ -35,7 +35,8 @@ class LRUCache:
             get_node = self.storage[key]
             #get_node = value
             self.order.move_to_end(get_node)
-            return get_node.value
+            # print(get_node.value, get_node.value[key], self.storage["item2"].value)
+            return get_node.value[key]
 
     """
     Adds the given key-value pair to the cache. The newly-
@@ -47,5 +48,46 @@ class LRUCache:
     want to overwrite the old value associated with the key with
     the newly-specified value.
     """
+
+    #So it should make a node, add it to the linked list, 
+    # then add a key/value pair to your dict for O(1) lookup time. 
+    # the node only needs the value to be created, the key is simply for look up
+
+    #linkedlist  ..... 
+    #dictionary .... every value of a dictionary is a node... 
+    #value of the node is a tuple ()
+    # node.value = ("Bob", 88)
+    # node.value = (Key, Value)
+    # node.value[1] = value
+
+    # dictionary = {"bob" : node}
+
     def set(self, key, value):
-        pass
+        if key in self.storage:
+            #self.storage[key]
+            node = self.storage[key]
+            node.value = {key: value}
+            # if the key is a duplicate then override value and move to most recently used  
+            self.order.move_to_end(node)    
+        
+        elif self.order.length >= self.limit:
+            value_removed = self.order.remove_from_head() 
+            for key1, value1 in value_removed.items():
+                
+                value_removed_key = key1
+            
+            self.storage.pop(value_removed_key)        
+            self.order.add_to_tail({key: value})
+            self.storage[key] = self.order.tail
+        
+        else: 
+            self.order.add_to_tail({key: value})
+            self.storage[key] = self.order.tail
+            #if overcapacity, then remove from head (oldest)
+
+
+       
+
+        
+
+        

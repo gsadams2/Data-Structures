@@ -5,7 +5,7 @@ class ListNode:
         self.value = value
         self.prev = prev
         self.next = next
-        
+
    
     def insert_after(self, value):
         """Wrap the given value in a ListNode and insert it
@@ -52,6 +52,8 @@ class DoublyLinkedList:
 
 
    
+
+
     def add_to_head(self, value):
         """Wraps the given value in a ListNode and inserts it 
         as the new head of the list. Don't forget to handle 
