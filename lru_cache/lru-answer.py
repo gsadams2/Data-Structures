@@ -15,12 +15,12 @@ class LRUCache:
     def __init__(self, limit=10):
         
         self.limit = limit
+        self.size = 0        
         self.order = DoublyLinkedList()
-        self.storage = {}
+        self.storage = dict()
         
-        # a = {"name": "george", "age": 26}
-        # a["name"] = george
     """
+
 
     Retrieves the value associated with the given key. Also
     needs to move the key-value pair to the end of the order
@@ -30,13 +30,15 @@ class LRUCache:
     """
     #hash table and doubly linked list.. this allows us to access, for example, the middle variable by looking it up instead of iterating 
     def get(self, key):
-        #get key from dictionary if the key is in self.storage         
+        #get the item or handle none
+        #move to front 
         if key in self.storage:
-            get_node = self.storage[key]
-            #get_node = value
-            self.order.move_to_end(get_node)
-            # print(get_node.value, get_node.value[key], self.storage["item2"].value)
-            return get_node.value[key]
+            node = self.storage[key]
+            self.order.move_to_end(node)
+            return node.value[1] 
+            #[1] because node.value returns a tuple.. and [1] is the secodn item in tuple, which is value
+        else:
+            return None
 
     """
     Adds the given key-value pair to the cache. The newly-
@@ -62,24 +64,28 @@ class LRUCache:
     # dictionary = {"bob" : node}
 
     def set(self, key, value):
+        #check if key already exists in the cache
         if key in self.storage:
-            #self.storage[key]
-            node = self.storage[key]
-            node.value = {key: value}
-            # if the key is a duplicate then override value and move to most recently used  
-            self.order.move_to_end(node)    
+            node = self.storage[key] #looking in dictionary for what we stored under key
+            node.value = (key, value)
+            self.order.move_to_end(node)
+            return
+
+        #check if we're at max capacity.... then remove oldest entry in the cache 
+        if self.size == self.limit:
+            del self.storage[self.order.head.value[0]] #delete oldest item in cahce from Dictionary
+            self.order.remove_from_head() #delete oldest item in cahce from DLL
+            self.size -= 1
         
-        elif self.order.length >= self.limit:
-            value_removed = self.order.remove_from_head() 
-            for key1, value1 in value_removed.items():         
-                value_removed_key = key1
-            self.storage.pop(value_removed_key)        
-            self.order.add_to_tail({key: value})
-            self.storage[key] = self.order.tail
-        else: 
-            self.order.add_to_tail({key: value})
-            self.storage[key] = self.order.tail
-            #if overcapacity, then remove from head (oldest)
+        #add a given key-value pair to the cache
+        #add to DLL at the tail
+        self.order.add_to_tail((key, value))
+        #add to dictionary 
+        self.storage[key] = self.order.tail
+        self.size += 1
+
+
+        #whatever we add or change should be most recently used 
 
 
        
